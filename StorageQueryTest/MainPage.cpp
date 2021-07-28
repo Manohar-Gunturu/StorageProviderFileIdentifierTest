@@ -90,7 +90,7 @@ namespace winrt::StorageQueryTest::implementation
                 debugPrint(L"\n");
             }
 
-            if (filesInQueryResult.Size() == 0 && (m_queryIndex + 1) < m_queryTotalItemCount)
+            if (filesInQueryResult.Size() == 0 && m_queryIndex < m_queryTotalItemCount)
             {
                 debugPrint(L"no more items, Something wrong\n");
                 co_return;
