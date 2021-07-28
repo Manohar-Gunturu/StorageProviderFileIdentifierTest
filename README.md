@@ -5,6 +5,8 @@ This sample app is used to demonstrate a problem we are encountering where the *
 We launch the test app by opening a file so:
 
 * Set the Configuration Properties > Debugging > Launch Application : NO
+* Build Debug, x64
+* Start Debugging (F5) / Green arrow
 
 The app is has file type associations with .jpg, .jpeg, .png
 
@@ -56,7 +58,7 @@ wait some time
 GetFilesAsync(270, 50) returned 0 files
 no more items, Something wrong
 ```
-In addition at this point if you attemp to get the file count with the query
+In addition at this point if you attemp to get the file count with the query, click on button *Get File Count*
 ```
 call auto totalItemCount = co_await m_query.GetItemCountAsync();
 ```
