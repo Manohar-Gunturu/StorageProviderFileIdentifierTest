@@ -11,6 +11,7 @@ We launch the test app by opening a file so:
 The app is has file type associations with .jpg, .jpeg, .png
 
 For testing:
+* Don't use One Drive folder.
 * use a folder with a few hundred .jpg(s).
 * Right click on a file in the folder
 * Open with > StorageQueryTest
