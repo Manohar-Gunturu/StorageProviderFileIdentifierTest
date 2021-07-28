@@ -36,7 +36,7 @@ debugPrint(L"GetFilesAsync(%d, %d) returned %d files\n", m_queryIndex, BulkLoadS
 m_queryIndex += resultCount;
 ```
 ## Problem Encounterd ##
-Normally if we continue to call GetFilesAsync we can get all the files in the query. However if we call GetFilesAsync a few times (or not), then *wait* several minutes
+After launching the app, press the button *Load More Storages Files* a few times to load batches of storage files.  Normally if we continue to call GetFilesAsync we can get all the files in the query. However if we call GetFilesAsync a few times (or not), then *wait* several minutes
 GetFilesAsync will return a collection with 0 files. 
 
 In the Debug Output, you will see something like:
@@ -61,3 +61,5 @@ In addition at this point if you attemp to get the file count with the query
 call auto totalItemCount = co_await m_query.GetItemCountAsync();
 ```
 GetItemCountAsync() will never return. 
+
+Note: you can change BulkLoadStorageFileCount to a smaller number to reduce the number of files retrieved in each batch.
