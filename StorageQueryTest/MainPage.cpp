@@ -80,12 +80,14 @@ namespace winrt::StorageQueryTest::implementation
 
             if (resultCount > 0)
             {
-                auto firstFile = filesInQueryResult.GetAt(0).Name().c_str();
-                debugPrint(L"first file in results: %ls ", firstFile);
+                const auto firstFile = filesInQueryResult.GetAt(0);
+                const auto firstFileName = firstFile.Name();
+                debugPrint(L"first file in results: %ls ", firstFileName.c_str());
                 if (resultCount > 1)
                 {
-                    auto lastFile = filesInQueryResult.GetAt(resultCount - 1).Name().c_str();
-                    debugPrint(L", last file in results: %ls ", lastFile);
+                    const auto lastFile = filesInQueryResult.GetAt(resultCount - 1);
+                    const auto lastFileName = lastFile.Name();
+                    debugPrint(L", last file in results: %ls ", lastFileName.c_str());
                 }
                 debugPrint(L"\n");
             }
