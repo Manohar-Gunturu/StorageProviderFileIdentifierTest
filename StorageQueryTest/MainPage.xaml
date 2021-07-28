@@ -8,7 +8,7 @@
     mc:Ignorable="d">
 
     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <RepeatButton x:Name="btnLoadStorageFile" Click="ClickHandler_GetMoreStorageFiles" Interval="100">Load Storages Files (Initial Set)</RepeatButton>
+        <RepeatButton x:Name="btnLoadStorageFile" Click="ClickHandler_GetMoreStorageFiles" Interval="100" Margin="20">Load More Storages Files</RepeatButton>
         <Button x:Name="btnGetFileCount" Click="ClickHandler_GetFileCount">Get File Count</Button>
     </StackPanel>
 </Page>

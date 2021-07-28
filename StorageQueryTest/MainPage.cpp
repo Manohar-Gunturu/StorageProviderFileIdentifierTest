@@ -9,12 +9,7 @@ using namespace winrt::Windows::Storage::Search;
 using namespace Windows::UI::Xaml;
 using namespace winrt::Windows::ApplicationModel::Activation;
 
-constexpr uint32_t MediaItemsLoadedBufferCount{ 150 };
-constexpr uint32_t FirstLoadStorageFileCount{ 16 };
-constexpr uint32_t QuickLoadStorageFileCount{ 32 };
 constexpr uint32_t BulkLoadStorageFileCount{ 50 };
-constexpr uint32_t RefreshLoadStorageFileCount{ 300 };
-constexpr uint32_t FileSystemSyncTimerIntervalMS{ 5000 };
 
 namespace winrt::StorageQueryTest::implementation
 {
@@ -106,9 +101,8 @@ namespace winrt::StorageQueryTest::implementation
     IAsyncAction MainPage::GetFileCountAsync()
     {
         auto strong_this{ get_strong() };
-        m_queryTotalItemCount = co_await m_query.GetItemCountAsync();
-        debugPrint(L"GetItemCountAsync() %d files\n", m_queryTotalItemCount);
+        auto totalItemCount = co_await m_query.GetItemCountAsync();
+        debugPrint(L"GetItemCountAsync() %d files\n", totalItemCount);
     }
-
 
 }
