@@ -37,7 +37,26 @@ m_queryIndex += resultCount;
 ```
 ## Problem Encounterd ##
 Normally if we continue to call GetFilesAsync we can get all the files in the query. However if we call GetFilesAsync a few times (or not), then *wait* several minutes
-GetFilesAsync will return a collection with 0 files. In addition at this point if you attemp to get the file count with the query
+GetFilesAsync will return a collection with 0 files. 
+
+In the Debug Output, you will see something like:
+```
+GetItemCountAsync() 2820 files
+...
+GetFilesAsync(120, 50) returned 50 files
+first file in results: 1Vol-slagq4.jpg , last file in results: 03Ltxc0w2Y4.jpg 
+GetFilesAsync(170, 50) returned 50 files
+first file in results: 3Anq9lRRFyo.jpg , last file in results: 4qQolDX6eSw.jpg 
+GetFilesAsync(220, 50) returned 50 files
+first file in results: 4rDCa5hBlCs.jpg , last file in results: 5wQKdLdizF4.jpg 
+
+```
+wait some time
+```
+GetFilesAsync(270, 50) returned 0 files
+no more items, Something wrong
+```
+In addition at this point if you attemp to get the file count with the query
 ```
 call auto totalItemCount = co_await m_query.GetItemCountAsync();
 ```
