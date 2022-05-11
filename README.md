@@ -1,6 +1,6 @@
 # StorageQueryTest
 ------
-This sample app is used to demonstrate a problem we are encountering where the *NeighboringFilesQuery* appears to go *bad*
+This sample app is used to demonstrate a problem we are encountering where the *StorageProviderFileIdentifier* returns null
 
 We launch the test app by opening a file so:
 
