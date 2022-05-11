@@ -25,13 +25,8 @@ namespace winrt::StorageQueryTest::implementation
         auto fileActivatedEventArgs = args.try_as<FileActivatedEventArgs>();
 
         if (fileActivatedEventArgs) {
-            BeginQueryWithActivatedFile(fileActivatedEventArgs);
+            BeginTest(fileActivatedEventArgs);
         }
-    }
-
-    IAsyncAction MainPage::ClickHandler_GetMoreStorageFiles(Windows::Foundation::IInspectable const& sender, Windows::UI::Xaml::RoutedEventArgs const& args)
-    {
-        co_await ContinueQueryAsync();
     }
 
 
@@ -43,10 +38,10 @@ namespace winrt::StorageQueryTest::implementation
 
     void MainPage::OnFileSystemChangeNotification(WS::Search::IStorageQueryResultBase /*sender*/, Windows::Foundation::IInspectable /*args*/)
     {
-        debugPrint(L"OnFileSystemChangeNotification()\n")
+        debugPrint(L"OnFileSystemChangeNotification()\n");
     }
 
-    winrt::fire_and_forget MainPage::BeginQueryWithActivatedFile(Windows::ApplicationModel::Activation::FileActivatedEventArgs const& fileActivatedEventArgs)
+    winrt::fire_and_forget MainPage::BeginTest(Windows::ApplicationModel::Activation::FileActivatedEventArgs const& fileActivatedEventArgs)
     {
         auto strong_this{ get_strong() };
 
@@ -56,55 +51,23 @@ namespace winrt::StorageQueryTest::implementation
         {
             m_query = query;
             m_fileSystemWatchToken = m_query.ContentsChanged({ get_strong(), &MainPage::OnFileSystemChangeNotification });
-            uint32_t queryFileIndex = co_await m_query.FindStartIndexAsync(storageFile);
             m_queryTotalItemCount = co_await m_query.GetItemCountAsync();
             debugPrint(L"GetItemCountAsync() %d files\n", m_queryTotalItemCount);
-            m_queryIndex = queryFileIndex;
-            auto filesInQueryResult = co_await m_query.GetFilesAsync(m_queryIndex, 16);
-            debugPrint(L"GetFilesAsync(%d, %d) returned %d files\n", m_queryIndex, 16, filesInQueryResult.Size());
-            m_queryIndex += filesInQueryResult.Size();
-        }
-    }
 
-    IAsyncAction MainPage::ContinueQueryAsync()
-    {
-        //co_await winrt::resume_background();
-        auto strong_this{ get_strong() };
+            auto filesInQueryResult = co_await m_query.GetFilesAsync(0, m_queryTotalItemCount);
 
-        if (m_query != nullptr)
-        {
-            auto filesInQueryResult = co_await m_query.GetFilesAsync(m_queryIndex, BulkLoadStorageFileCount);
-            auto resultCount = filesInQueryResult.Size();
-            debugPrint(L"GetFilesAsync(%d, %d) returned %d files\n", m_queryIndex, BulkLoadStorageFileCount, resultCount);
-            m_queryIndex += resultCount;
-
-            if (resultCount > 0)
+            for (auto file : filesInQueryResult)
             {
-                const auto firstFile = filesInQueryResult.GetAt(0);
-                const auto firstFileName = firstFile.Name();
-                debugPrint(L"first file in results: %ls ", firstFileName.c_str());
-                if (resultCount > 1)
-                {
-                    const auto lastFile = filesInQueryResult.GetAt(resultCount - 1);
-                    const auto lastFileName = lastFile.Name();
-                    debugPrint(L", last file in results: %ls ", lastFileName.c_str());
-                }
-                debugPrint(L"\n");
-            }
+                auto retrievedProperties = co_await file.Properties().RetrievePropertiesAsync(SystemProperties);
+                auto odidref = Windows::Foundation::IReference<hstring>(retrievedProperties.TryLookup(ODID).try_as<Windows::Foundation::IReference<hstring>>());
+                auto filename = file.Name();
+                auto odid = odidref.Value();
 
-            if (filesInQueryResult.Size() == 0 && m_queryIndex < m_queryTotalItemCount)
-            {
-                debugPrint(L"no more items, Something wrong\n");
-                co_return;
+               debugPrint(L"file name %s, %s \n", filename.c_str(), odid.c_str());
             }
         }
     }
 
-    IAsyncAction MainPage::GetFileCountAsync()
-    {
-        auto strong_this{ get_strong() };
-        auto totalItemCount = co_await m_query.GetItemCountAsync();
-        debugPrint(L"GetItemCountAsync() %d files\n", totalItemCount);
-    }
+
 
 }

@@ -32,6 +32,8 @@
               <uap:FileType>.png</uap:FileType>
               <uap:FileType>.jpeg</uap:FileType>
               <uap:FileType>.jpe</uap:FileType>
+              <uap:FileType>.heic</uap:FileType>
+              <uap:FileType>.mp4</uap:FileType>
             </uap:SupportedFileTypes>
             <uap:Logo>Assets\imagePlaceholder.png</uap:Logo>
           </uap:FileTypeAssociation>
